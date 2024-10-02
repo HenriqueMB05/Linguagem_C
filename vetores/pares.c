@@ -9,7 +9,7 @@ int main(){
     int vet[tam];
     int i;
 
-    printf("Digite %d número: \n", tam);
+    printf("Digite %d número: \n    ", tam);
     for(i=0;i<tam;i++){
         scanf("%d", &vet[i]);
     }
