@@ -9,41 +9,36 @@ typedef struct{
 }ALUNO;
 
 typedef struct {
-    ALUNO estudantes[5];
+    ALUNO aluno[5];
     int qtd_aluno;
 }ALUNOS;
 
 
 void addAluno(ALUNOS *alunos){
-    ALUNO aluno;
+    ALUNO novoAluno;
     if(alunos->qtd_aluno>=5){
         printf("Quatida máxima de alunos cadastrada");  
         return;
     }
 
     printf("Qual o nome do Aluno: ");
-    scanf("%49s", aluno.nome);
-    printf("Qual a idade do aluno %s: ", aluno.nome);
-    scanf("%d", &aluno.idade);
-    printf("Qual a nota final do aluno %s: ", aluno.nome);
-    scanf("%f", &aluno.nota_final);
+    scanf("%49s", novoAluno.nome);
+    printf("Qual a idade do aluno %s: ", novoAluno.nome);
+    scanf("%d", &novoAluno.idade);
+    printf("Qual a nota final do aluno %s: ", novoAluno.nome);
+    scanf("%f", &novoAluno.nota_final);
 
-    alunos->estudantes[alunos->qtd_aluno]=aluno;
+    alunos->aluno[alunos->qtd_aluno]=novoAluno;
     alunos->qtd_aluno++;
 }
 
 
 void lista(ALUNOS *alunos){
-    if (alunos->qtd_aluno >= 5){
-        printf("Quatida máxima de alunos cadastrada");
-        return;
-    }
-
     for(int i=0;i<alunos->qtd_aluno;i++){
-        ALUNO aluno = alunos->estudantes[i];
-        printf("\nAluno: %s\n", aluno.nome);
-        printf("\nIdade: %d\n", aluno.idade);
-        printf("\nNota final: %.1f\n", aluno.nota_final);
+        ALUNO novoAluno = alunos->aluno[i];
+        printf("\nAluno: %s\n", novoAluno.nome);
+        printf("\nIdade: %d\n", novoAluno.idade);
+        printf("\nNota final: %.1f\n", novoAluno.nota_final);
     }
 }
 
