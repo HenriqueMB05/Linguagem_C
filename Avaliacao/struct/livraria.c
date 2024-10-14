@@ -67,22 +67,94 @@ void addLivro(Biblioteca *bib){
 
 void listar(Biblioteca *bib){
     for(int i=0;i<bib->qtdLivros;i++){
-        Livro livro = bib->livro[i];
+        Livro livros = bib->livro[i];
         printf("Livros\n\n");
-        printf("Titulo: %s", livro.titulo);
-        printf("Autor: %s", livro.autor);
-        printf("ISBN: %s", livro.ISBN);
-        printf("Editora: %s", livro.editora);
-        printf("Publicação: %d\n", livro.pub);
-        printf("Páginas: %d\n", livro.paginas);
+        printf("Titulo: %s", livros.titulo);
+        printf("Autor: %s", livros.autor);
+        printf("ISBN: %s", livros.ISBN);
+        printf("Editora: %s", livros.editora);
+        printf("Publicação: %d\n", livros.pub);
+        printf("Páginas: %d\n", livros.paginas);
         printf("Gêneros:\n");
-        for(int j=0;j<livro.numgen;j++){
-            printf("%s", livro.generos[j]);
+        for(int j=0;j<livros.numgen;j++){
+            printf("%s", livros.generos[j]);
         }
     }
 }
 
+void mostrar(Livro livros){
+    
+    printf("Titulo: %s", livros.titulo);
+    printf("Autor: %s", livros.autor);
+    printf("ISBN: %s", livros.ISBN);
+    printf("Editora: %s", livros.editora);
+    printf("Publicação: %d\n", livros.pub);
+    printf("Páginas: %d\n", livros.paginas);
+    printf("Gêneros:\n");
+    for (int j = 0; j < livros.numgen; j++)
+    {
+        printf("%s", livros.generos[j]);
+    }
+}
+
+
+void buscar(Biblioteca *bib){
+    
+    int aux;
+    char buscar[50];
+    printf("Por qual parâmetro você deseja pesquisar: \n");
+    printf("1.Titulo\n");
+    printf("2.Autor\n");
+    printf("3.ISBN\n");
+    printf("4.Editora\n");
+    scanf("%d", &aux);
+    getchar();
+    printf("Pesquisar: ");
+    fgets(buscar, 50,stdin);
+    strtok("\n", buscar);
+    for(int i=0;i<bib->qtdLivros;i++){
+        Livro livros = bib->livro[i];
+        switch (aux){
+            case 1:
+                if(strcmp(livros.titulo, buscar)==0){
+                    mostrar(livros);
+                }
+                break;
+            case 2:
+                if(strcmp(livros.autor, buscar)==0){
+                    mostrar(livros);
+                }
+                break;
+            case 3:
+                if(strcmp(livros.ISBN, buscar)==0){
+                    mostrar(livros);
+                }
+                break;
+            case 4:
+                if(strcmp(livros.editora, buscar)==0){
+                    mostrar(livros);
+                }
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+}
 int main(){
     setlocale(LC_ALL, "");
+    Biblioteca bib;
+    bib.qtdLivros=0;
+    int op=0;
+    do{
+    addLivro(&bib);
+    printf("\n\n\n");
+    //listar(&bib);
+    printf("\n\n\n");
+    op++;
+    }while(op!=2);
+    buscar(&bib);
+
     return 0;
 }
