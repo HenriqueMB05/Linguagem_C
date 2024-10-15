@@ -164,7 +164,7 @@ void buscar(Biblioteca *bib){
 
 
 void removerLivro(Biblioteca *bib){
-    // variavel para excluir o livro pelo titulo, não vou fazer com em pesquisar muito paia colocar varios metodos
+    int aux;
     char tit[50];
     if(bib->qtdLivros==0){
         printf("Não há nenhum livro cadastrado!");
@@ -177,17 +177,18 @@ void removerLivro(Biblioteca *bib){
         Livro livros = bib->livro[i];
         //verificar se o titulo do livro é igual ao que o usuário digitou
         if(strcmp(livros.titulo, tit)==0){
-            for(int j=0;j<bib->qtdLivros;j++){
-                //O livro que foi encontrado será substituido pelo seguinte
-                bib->livro[j] = bib->livro[j+1];
-                /*Que coisa, não sei como remover o ultimo livro e agora tô sem internet para pesquisar.
-                Como o ser humano olhou para a natureza e imaginou, vou invetar o C, caramba esse maluco não tinha um dbz pra assistir ou ler nn????*/
-                printf("%d -> %d\n",j, j+1);
-            }
-            return;
+            //aux recebe o indice do livro
+            aux =i;
         }
+            
     }
+    //Descobri como fazer agora
+    for(int i =aux;i<bib->qtdLivros-1;i++){
+        bib->livro[i] =bib->livro[i+1];
+    }
+    bib->qtdLivros--;
 }
+
 
 
 int main(){
