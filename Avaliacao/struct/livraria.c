@@ -18,14 +18,16 @@ typedef struct{
     int qtdLivros;
 }Biblioteca;
 
+/*Essa função recebe a struct biblioteca como um ponteiro, assim é possivel manipular direto na memoria*/
 void addLivro(Biblioteca *bib){
+    // Verifica se o limite de livros foi excedido
     if(bib->qtdLivros>=5){
         printf("Quantidade máxima de livros alcançada.\nNão é possivel adicionar novos livros!\n");
         return;
     }
 
     Livro novoLivro;
-
+/*usa o fgets para receber até a quebra de linha, o strtok é para adicionar a quebra de linha*/
     printf("Título: ");
     fgets(novoLivro.titulo, 50, stdin);
     strtok("\n", novoLivro.titulo);
@@ -52,6 +54,7 @@ void addLivro(Biblioteca *bib){
         scanf("%d", &novoLivro.numgen);
     } while (novoLivro.numgen>6);
     
+    //O getchar é utilizado para limpar o buff da memoria, meio que a quebra de linha do scanf fica armazenado e conflita como fgets
     getchar();
     
     for(int i=0;i<novoLivro.numgen;i++){
@@ -60,12 +63,20 @@ void addLivro(Biblioteca *bib){
         strtok("\n", novoLivro.generos[i]);
     }
     
+    //Adicionando o livro cadastrado no vetor livro dentro de biblioteca
     bib->livro[bib->qtdLivros]=novoLivro;
     bib->qtdLivros++;
 }
 
 
 void listar(Biblioteca *bib){
+    //Verifica se existem livros cadastrados
+    if(bib->qtdLivros==0){
+        printf("Não há nenhum livro cadastrado\n");
+        return;
+    }
+
+
     for(int i=0;i<bib->qtdLivros;i++){
         Livro livros = bib->livro[i];
         printf("Livros\n\n");
@@ -82,8 +93,8 @@ void listar(Biblioteca *bib){
     }
 }
 
+//Vai ser usado para mostrar um livro em especifico
 void mostrar(Livro livros){
-    
     printf("Titulo: %s", livros.titulo);
     printf("Autor: %s", livros.autor);
     printf("ISBN: %s", livros.ISBN);
@@ -99,9 +110,15 @@ void mostrar(Livro livros){
 
 
 void buscar(Biblioteca *bib){
-    
+    if(bib->qtdLivros==0){
+        printf("Não há nenhum livro cadastrado\n");
+        printf("%d", bib->qtdLivros);
+        return;
+    }
+
     int aux;
     char buscar[50];
+    //Menu de opções do usuário, queria fazer o usuario escrever mas é meio chato toda vez escrever titulo ao invés de 1
     printf("Por qual parâmetro você deseja pesquisar: \n");
     printf("1.Titulo\n");
     printf("2.Autor\n");
@@ -112,6 +129,8 @@ void buscar(Biblioteca *bib){
     printf("Pesquisar: ");
     fgets(buscar, 50,stdin);
     strtok("\n", buscar);
+
+    //Vai percorrer por todo vetor livro e compara o nome pesquisado e o parâmetro que o  usuário pediu
     for(int i=0;i<bib->qtdLivros;i++){
         Livro livros = bib->livro[i];
         switch (aux){
@@ -135,26 +154,75 @@ void buscar(Biblioteca *bib){
                     mostrar(livros);
                 }
                 break;
-            
+            //Aqui era para ter um de gênero mas achei paia, dps eu adiciono
             default:
                 break;
         }
     }
 
 }
+
+
+void removerLivro(Biblioteca *bib){
+    // variavel para excluir o livro pelo titulo, não vou fazer com em pesquisar muito paia colocar varios metodos
+    char tit[50];
+    if(bib->qtdLivros==0){
+        printf("Não há nenhum livro cadastrado!");
+        return;
+    }
+    printf("Digite o título do livro que você deseja remover: ");
+    fgets(tit, 50, stdin);
+    strtok("\n", tit);
+    for(int i=0;i<bib->qtdLivros;i++){
+        Livro livros = bib->livro[i];
+        //verificar se o titulo do livro é igual ao que o usuário digitou
+        if(strcmp(livros.titulo, tit)==0){
+            for(int j=0;j<bib->qtdLivros;j++){
+                //O livro que foi encontrado será substituido pelo seguinte
+                bib->livro[j] = bib->livro[j+1];
+                /*Que coisa, não sei como remover o ultimo livro e agora tô sem internet para pesquisar.
+                Como o ser humano olhou para a natureza e imaginou, vou invetar o C, caramba esse maluco não tinha um dbz pra assistir ou ler nn????*/
+                printf("%d -> %d\n",j, j+1);
+            }
+            return;
+        }
+    }
+}
+
+
 int main(){
     setlocale(LC_ALL, "");
     Biblioteca bib;
     bib.qtdLivros=0;
-    int op=0;
+    int op;
+
     do{
-    addLivro(&bib);
-    printf("\n\n\n");
-    //listar(&bib);
-    printf("\n\n\n");
-    op++;
-    }while(op!=2);
-    buscar(&bib);
+        printf("Menu:\n\n");
+        printf("1.Adicionar Livro\n");
+        printf("2.Listar Livros\n");
+        printf("3.Buscar Livro\n");
+        printf("4.Remover Livro\n");
+        printf("5.Sair\n");
+        scanf("%d", &op);
+        getchar();
+        switch(op){
+            case 1:
+                addLivro(&bib);
+                break;
+            case 2:
+                listar(&bib);
+                break;
+            case 3:
+
+                buscar(&bib);
+                break;
+            case 4:
+                removerLivro(&bib);
+                break;
+            default:
+                break;
+        }
+    }while(op!=5);
 
     return 0;
 }
