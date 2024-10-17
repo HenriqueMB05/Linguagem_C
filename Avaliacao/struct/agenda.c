@@ -14,7 +14,7 @@ typedef struct{
     char CEP[Max_Tam];
 }Endereco;
 
-typedef struct{
+typedef struct{ 
     Endereco endereco[Max_qtd];
     char nome[Max_Tam];
     char sobrenome[Max_Tam];
@@ -53,8 +53,15 @@ void addEndereco(Contato *contato){
         printf("Bairro: ");
         fgets(novoEndereco.bairro, Max_Tam, stdin);
         strtok("\n",novoEndereco.bairro);
-        printf("Rua: ");
-        fgets(novoEndereco.rua, Max_Tam, stdin);
+        printf("Cidade: ");
+        fgets(novoEndereco.cidade, Max_Tam, stdin);
+        strtok("\n",novoEndereco.cidade);
+        printf("CEP: ");
+        fgets(novoEndereco.CEP, Max_Tam, stdin);
+        strtok("\n",novoEndereco.CEP);
+        printf("Estado: ");
+        fgets(novoEndereco.estado, Max_Tam, stdin);
+        strtok("\n",novoEndereco.estado);
         contato->endereco[i] = novoEndereco;
     }
 }
@@ -71,7 +78,6 @@ void addContato(Agenda *agenda){
 
     printf("Nome: ");
     fgets(novoContato.nome, Max_Tam, stdin);
-    strtok("\n", novoContato.nome);
     printf("Sobrenome: ");
     fgets(novoContato.sobrenome, Max_Tam, stdin);
     strtok("\n", novoContato.sobrenome);
@@ -94,6 +100,52 @@ void addContato(Agenda *agenda){
     agenda->qtdContato++;
 }
 
+
+int contarElementos(char vetor[][Max_Tam], int tamanho){
+    int count = 0;
+    for (int i = 0; i < tamanho; i++){
+        if (strlen(vetor[i]) > 0){ 
+            count++;
+        }
+    }
+    return count;
+}
+
+
+void listar(Agenda *agenda){
+    int aux;
+    if(agenda->qtdContato<1){
+        printf("Não há contatos cadastrados!");
+        return;
+    }
+
+    for(int i =0;i<agenda->qtdContato;i++){
+        Contato contatos = agenda->contato[i];
+    	aux = contarElementos(contatos.endereco, Max_qtd);
+        printf("Nome: %s %s", contatos.nome, contatos.sobrenome);
+        printf("Endereços:\n");
+        for(int j =0;j<aux;j++){
+            Endereco endereco = contatos.endereco[j];
+            printf("Rua: %s", endereco.rua);
+            printf("Número: %d\n", endereco.numeroCasa);
+            printf("Bairro: %s", endereco.bairro);
+            printf("Cidade: %s", endereco.cidade);
+            printf("CEP: %s", endereco.CEP);
+            printf("Estado: %s", endereco.estado);   
+        }
+        aux = contarElementos(contatos.telefone, Max_qtd);
+        printf("Números: \n");
+        for(int j=0;j<aux;j++){
+            printf("%dº: %s", j+1, contatos.telefone[j]);
+        }
+        aux = contarElementos(contatos.email, Max_qtd);
+        printf("Emails: ");
+        for(int j=0;j<aux;j++){
+            printf("%dº: %s", j+1, contatos.email[j]);
+        }
+        printf("\n");
+    }
+}
 
 int indice(){
     Agenda agenda;
@@ -142,7 +194,7 @@ int main(){
                 addContato(&agenda);
                 break;
             case 2:
-                //listar(&agenda);
+                listar(&agenda);
                 break;
             case 3:
                 remover(&agenda);
